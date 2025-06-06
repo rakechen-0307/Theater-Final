@@ -8,8 +8,7 @@ public class OSCReceiver : MonoBehaviour
     private OscServer oscServer;
     [SerializeField] private string oscAddress;
     [SerializeField] private int port;
-    [SerializeField]
-    private bool isDebug;
+    [SerializeField] private bool isDebug;
 
     void Awake()
     {

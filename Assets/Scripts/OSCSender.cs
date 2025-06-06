@@ -8,8 +8,7 @@ public class OSCSender : MonoBehaviour
     private OscClient oscClient;
     [SerializeField] private string ip;
     [SerializeField] private int port;
-    [SerializeField]
-    private bool isDebug;
+    [SerializeField] private bool isDebug;
 
     private void Awake()
     {
