@@ -1,10 +1,10 @@
 using UnityEngine;
 using OscJack;
 
-public class OSCReceiver : MonoBehaviour
+public class OSCReceiverTest : MonoBehaviour
 {
-    private static OSCReceiver _instance;
-    public static OSCReceiver Instance { get => _instance; }
+    private static OSCReceiverTest _instance;
+    public static OSCReceiverTest Instance { get => _instance; }
     private OscServer oscServer;
     [SerializeField] private string oscAddress;
     [SerializeField] private int port;
