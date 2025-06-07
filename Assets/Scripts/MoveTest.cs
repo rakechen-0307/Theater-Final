@@ -5,11 +5,16 @@ public class MoveTest : MonoBehaviour
 {
     [SerializeField] private GameObject conveyor;
     [SerializeField] private GameObject barrel1;
+    private Rigidbody barrel1RB;
+    private Barrel barrel1Collision;
     [SerializeField] private GameObject barrel2;
+    private Rigidbody barrel2RB;
     [SerializeField] private GameObject gripper;
-    [SerializeField] private GameObject zstring;
+    private Rigidbody gripperRB;
     [SerializeField] private GameObject clawLeft;
+    private Claw clawLeftTrigger;
     [SerializeField] private GameObject clawRight;
+    private Claw clawRightTrigger;
     [SerializeField] private GameObject handleLeft;
     [SerializeField] private GameObject handleRight;
 
@@ -18,9 +23,45 @@ public class MoveTest : MonoBehaviour
     [SerializeField] private float gripperHorizontalSpeed = 0.1f;
     [SerializeField] private float clawSpeed = 0.05f;
     [SerializeField] private float handleRotationSpeed = 3f;
+    [SerializeField] private float gravity = 9.8f;
 
-    // Update is called once per frame
-    void Update()
+    private bool pickup = false;
+
+    void Start()
+    {
+        gripperRB = gripper.GetComponent<Rigidbody>();
+        if (gripperRB == null)
+        {
+            Debug.LogError("Gripper Rigidbody not found!");
+        }
+        barrel1RB = barrel1.GetComponent<Rigidbody>();
+        if (barrel1RB == null)
+        {
+            Debug.LogError("Barrel1 Rigidbody not found!");
+        }
+        barrel2RB = barrel2.GetComponent<Rigidbody>();
+        if (barrel2RB == null)
+        {
+            Debug.LogError("Barrel2 Rigidbody not found!");
+        }
+        clawLeftTrigger = clawLeft.transform.GetComponentInChildren<Claw>();
+        if (clawLeftTrigger == null)
+        {
+            Debug.LogError("Claw Left Trigger not found!");
+        }
+        clawRightTrigger = clawRight.transform.GetComponentInChildren<Claw>();
+        if (clawRightTrigger == null)
+        {
+            Debug.LogError("Claw Right Trigger not found!");
+        }
+        barrel1Collision = barrel1.GetComponent<Barrel>();
+        if (barrel1Collision == null)
+        {
+            Debug.LogError("Barrel1 Collision not found!");
+        }
+        pickup = false;
+    }
+    void FixedUpdate()
     {
         // Receive Hokuyo data
         /*
@@ -33,36 +74,64 @@ public class MoveTest : MonoBehaviour
             }
         }
         */
-
-        if (Input.GetKey(KeyCode.A))
+        // Initialize
+        if (!pickup && !barrel1Collision.isGrounded) // Consider gravity
         {
-            barrel1.transform.position = new Vector3(
-                barrel1.transform.position.x - Time.deltaTime * conveyorSpeed,
-                barrel1.transform.position.y,
-                barrel1.transform.position.z
-            );
+            barrel1RB.linearVelocity = new Vector3(0, barrel1RB.linearVelocity.y - gravity * Time.deltaTime, 0);
         }
-        else if (Input.GetKey(KeyCode.S)) 
+        else
         {
-            barrel1.transform.position = new Vector3(
-                barrel1.transform.position.x + Time.deltaTime * conveyorSpeed,
-                barrel1.transform.position.y,
-                barrel1.transform.position.z
-            );
+            barrel1RB.linearVelocity = Vector3.zero;
         }
+        barrel2RB.linearVelocity = Vector3.zero;
+        gripperRB.linearVelocity = Vector3.zero;
 
+        // Gripper movement
         if (Input.GetKey(KeyCode.D))
         {
-            gripper.transform.position = new Vector3(
-                gripper.transform.position.x,
-                gripper.transform.position.y - Time.deltaTime * gripperVerticalSpeed,
-                gripper.transform.position.z
-            );
-            zstring.transform.position = new Vector3(
-                zstring.transform.position.x,
-                zstring.transform.position.y - Time.deltaTime * gripperVerticalSpeed,
-                zstring.transform.position.z
-            );
+            gripperRB.linearVelocity += new Vector3(0, -gripperVerticalSpeed, 0);
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            gripperRB.linearVelocity += new Vector3(0, gripperVerticalSpeed, 0);
+        }
+
+        // Claw movement
+        if (clawLeftTrigger.touched && clawRightTrigger.touched)
+        {
+            pickup = true;
+        }
+        else
+        {
+            pickup = false;
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (!pickup && clawLeft.transform.localPosition.x >= 0.0013f)
+            {
+                clawLeft.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
+                clawRight.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
+            }
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            if (clawLeft.transform.localPosition.x <= 0.008f)
+            {
+                clawLeft.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
+                clawRight.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
+            }
+        }
+        // Barrel movement
+        if (barrel1Collision.isOnConveyor)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                barrel1RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                barrel1RB.linearVelocity += new Vector3(conveyorSpeed, 0, 0);
+            }
         }
     }
 }
