@@ -37,7 +37,7 @@ public class MoveTest : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             barrel1.transform.position = new Vector3(
-                barrel1.transform.position.x + Time.deltaTime * conveyorSpeed,
+                barrel1.transform.position.x - Time.deltaTime * conveyorSpeed,
                 barrel1.transform.position.y,
                 barrel1.transform.position.z
             );
@@ -45,7 +45,7 @@ public class MoveTest : MonoBehaviour
         else if (Input.GetKey(KeyCode.S)) 
         {
             barrel1.transform.position = new Vector3(
-                barrel1.transform.position.x - Time.deltaTime * conveyorSpeed,
+                barrel1.transform.position.x + Time.deltaTime * conveyorSpeed,
                 barrel1.transform.position.y,
                 barrel1.transform.position.z
             );
