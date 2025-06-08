@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyData
 {
@@ -24,14 +25,22 @@ public class Game2Manager : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float spawnPeriod = 1f;
     [SerializeField] private float spawnProb = 0.2f;
+    [SerializeField] private float hitRadius = 20f;
     [SerializeField] private Transform enemyParent;
-
-    [SerializeField] private GameObject enemyIconPrefab; // Icon on UI
-    [SerializeField] private RectTransform uiMap; // The UI map panel
+    [SerializeField] private GameObject enemyIconPrefab;
+    [SerializeField] private RectTransform uiMap;
+    [SerializeField] private int uiWidth = 1920;
+    [SerializeField] private int uiHeight = 1080;
+    [SerializeField] private float minY = -0.3f;
+    [SerializeField] private float maxY = 0.25f;
+    [SerializeField] private int completeCount = 20;
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private bool isDebug = false;
 
     private List<EnemyData> activeEnemies = new List<EnemyData>();
     private int nextEnemyID = 0;
-    private Vector3 spawnCenter = new Vector3(0, 0, -4);
+    private Vector3 spawnCenter = new Vector3(0, 0, -6);
+    private int hitCount = 0;
 
     void Start()
     {
@@ -50,6 +59,7 @@ public class Game2Manager : MonoBehaviour
 
                 int id = nextEnemyID++;
                 GameObject icon = Instantiate(enemyIconPrefab, uiMap); // For clicking on UI
+                // TODO: remove this line when using Hokuyo
                 icon.GetComponent<Button>().onClick.AddListener(() => DestroyEnemyByID(id));
                 icon.SetActive(true);
 
@@ -66,7 +76,8 @@ public class Game2Manager : MonoBehaviour
     Vector3 GenerateRandomPosition()
     {
         float angle = Random.Range(-spawnAngle / 2f, spawnAngle / 2f) * Mathf.Deg2Rad;
-        Vector3 direction = new Vector3(Mathf.Sin(angle), 2f, Mathf.Cos(angle));
+        float y = Random.Range(minY, maxY);
+        Vector3 direction = new Vector3(Mathf.Sin(angle), y, Mathf.Cos(angle));
         return spawnCenter + direction * spawnDistance;
     }
 
@@ -78,11 +89,33 @@ public class Game2Manager : MonoBehaviour
             Destroy(data.EnemyObject);
             Destroy(data.UIIcon);
             activeEnemies.Remove(data);
+            hitCount++;
         }
     }
 
     void Update()
     {
+        // Receive Hokuyo data
+        /*
+        FrameData data = OSCReceiver.Instance.GetLatestFrame();
+        if (data != null)
+        {
+            if (isDebug) {
+                foreach (var entity in data.Entities)
+                {
+                    Debug.Log($"Entity {entity.ID}: X={entity.X}, Y={entity.Y}");
+                }
+            }
+            CheckHits(data);
+        }
+        */
+
+        if (hitCount >= completeCount)
+        {
+            GoToNextScene();
+            return;
+        }
+
         // Update icon positions in case enemies move (optional)
         foreach (var data in activeEnemies)
         {
@@ -101,5 +134,35 @@ public class Game2Manager : MonoBehaviour
             (mapPos.y / (spawnDistance * 2)) * uiMap.rect.height
         );
         data.UIIcon.GetComponent<RectTransform>().anchoredPosition = anchoredPos;
+    }
+
+    public void CheckHits(List<Vector2> dataPoints)
+    {
+        foreach (var point in dataPoints)
+        {
+            // Check collision with each icon
+            foreach (var enemy in new List<EnemyData>(activeEnemies))
+            {
+                RectTransform iconRect = enemy.UIIcon.GetComponent<RectTransform>();
+                // Vector2 iconPos = iconRect.anchoredPosition;
+                Vector2 iconPos = new Vector2(
+                    uiWidth / 2 + iconRect.transform.position.x, 
+                    uiHeight / 2 + iconRect.transform.position.y
+                );
+                Debug.Log(point);
+                Debug.Log(iconPos);
+
+                if (Vector2.Distance(point, iconPos) < hitRadius)
+                {
+                    DestroyEnemyByID(enemy.ID);
+                    break;
+                }
+            }
+        }
+    }
+
+    void GoToNextScene()
+    {
+        SceneManager.LoadScene(nextSceneName);
     }
 }

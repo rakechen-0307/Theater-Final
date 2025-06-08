@@ -508,7 +508,6 @@ GameObject:
   m_Component:
   - component: {fileID: 469089522}
   - component: {fileID: 469089521}
-  - component: {fileID: 469089520}
   m_Layer: 0
   m_Name: NDIFloorSender
   m_TagString: Untagged
@@ -516,18 +515,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &469089520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469089519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 265807614c289444eadef52c92bc9708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &469089521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,14 +577,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803689a5f4c497042bec9829e85c6fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnAngle: 60
+  spawnAngle: 90
   spawnDistance: 5
   enemyPrefab: {fileID: 5781650478587022367}
   spawnPeriod: 1
-  spawnProb: 1
+  spawnProb: 0.4
+  hitRadius: 20
   enemyParent: {fileID: 1591760794}
   enemyIconPrefab: {fileID: 2033699416}
   uiMap: {fileID: 1418310545}
+  uiWidth: 1920
+  uiHeight: 1080
+  minY: -0.4
+  maxY: 0.1
+  completeCount: 20
+  nextSceneName: EndVideo
+  isDebug: 0
 --- !u!4 &684548465
 Transform:
   m_ObjectHideFlags: 0
@@ -645,6 +640,12 @@ MonoBehaviour:
   oscAddress: /touches
   port: 7000
   isDebug: 1
+  realMinWidth: -1.98
+  realMaxWidth: 2.05
+  realMinHeight: -0.95
+  realMaxHeight: 0.97
+  uiWidth: 1920
+  uiHeight: 1080
 --- !u!4 &719744879
 Transform:
   m_ObjectHideFlags: 0
@@ -788,7 +789,7 @@ Transform:
   m_GameObject: {fileID: 1591760793}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.532518, y: 8.035496, z: 0.092288494}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1147,7 +1148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2033699417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3963,7 +3964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5868106890214189158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4433,7 +4434,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.53, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2866410888472954427}

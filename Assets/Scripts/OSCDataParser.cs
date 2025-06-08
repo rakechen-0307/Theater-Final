@@ -5,10 +5,10 @@ using OscJack;
 public class EntityData
 {
     public int ID;
-    public float X;
-    public float Y;
+    public int X;
+    public int Y;
 
-    public EntityData(int id, float x, float y)
+    public EntityData(int id, int x, int y)
     {
         ID = id;
         X = x;
@@ -36,6 +36,12 @@ public class OSCDataParser : MonoBehaviour
     [SerializeField] private string oscAddress;
     [SerializeField] private int port;
     [SerializeField] private bool isDebug;
+    [SerializeField] private float realMinWidth = -1.98f;
+    [SerializeField] private float realMaxWidth = 2.05f;
+    [SerializeField] private float realMinHeight = -0.95f;
+    [SerializeField] private float realMaxHeight = 0.97f;
+    [SerializeField] private int uiWidth = 1920;
+    [SerializeField] private int uiHeight = 1080;
 
     private FrameData latestFrameData;
 
@@ -59,8 +65,9 @@ public class OSCDataParser : MonoBehaviour
             int id = Mathf.RoundToInt(data.GetElementAsFloat(baseIndex));
             float x = data.GetElementAsFloat(baseIndex + 1);
             float y = data.GetElementAsFloat(baseIndex + 2);
+            List<int> uiCoord = Real2UI(x, y);
 
-            entities.Add(new EntityData(id, x, y));
+            entities.Add(new EntityData(id, uiCoord[0], uiCoord[1]));
         }
 
         latestFrameData = new FrameData(frameIdx, entities);
@@ -69,6 +76,17 @@ public class OSCDataParser : MonoBehaviour
         {
             Debug.Log($"Stored frame {frameIdx} with {entities.Count} entities.");
         }
+    }
+
+    // Map position in real world to UI coordinate
+    private List<int> Real2UI(float x, float y)
+    {
+        float normX = Mathf.InverseLerp(realMinWidth, realMaxWidth, x);
+        float normY = Mathf.InverseLerp(realMinHeight, realMaxHeight, y);
+        int uiX = Mathf.RoundToInt(normX * uiWidth);
+        int uiY = Mathf.RoundToInt(normY * uiHeight);
+
+        return new List<int> { uiX, uiY };
     }
 
     private void OnReceiveHokuyo(string address, OscDataHandle data) 

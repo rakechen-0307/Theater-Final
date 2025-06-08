@@ -300,7 +300,6 @@ GameObject:
   m_Component:
   - component: {fileID: 469089522}
   - component: {fileID: 469089521}
-  - component: {fileID: 469089520}
   m_Layer: 0
   m_Name: NDIFloorSender
   m_TagString: Untagged
@@ -308,18 +307,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &469089520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469089519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 265807614c289444eadef52c92bc9708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &469089521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +372,12 @@ MonoBehaviour:
   oscAddress: /touches
   port: 7000
   isDebug: 1
+  realMinWidth: -1.98
+  realMaxWidth: 2.05
+  realMinHeight: -0.95
+  realMaxHeight: 0.97
+  uiWidth: 1920
+  uiHeight: 1080
 --- !u!4 &719744879
 Transform:
   m_ObjectHideFlags: 0
