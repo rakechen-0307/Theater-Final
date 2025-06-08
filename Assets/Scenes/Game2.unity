@@ -581,14 +581,14 @@ MonoBehaviour:
   spawnDistance: 5
   enemyPrefab: {fileID: 5781650478587022367}
   spawnPeriod: 1
-  spawnProb: 0.5
-  hitRadius: 20
+  spawnProb: 0.4
+  hitRadius: 50
   enemyParent: {fileID: 1591760794}
   enemyIconPrefab: {fileID: 2033699416}
   uiMap: {fileID: 1418310545}
   uiWidth: 1920
   uiHeight: 1080
-  minY: -0.4
+  minY: -0.3
   maxY: 0.1
   completeCount: 20
   nextSceneName: EndVideo
