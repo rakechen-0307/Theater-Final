@@ -60,7 +60,7 @@ public class Game2Manager : MonoBehaviour
                 int id = nextEnemyID++;
                 GameObject icon = Instantiate(enemyIconPrefab, uiMap); // For clicking on UI
                 // TODO: remove this line when using Hokuyo
-                icon.GetComponent<Button>().onClick.AddListener(() => DestroyEnemyByID(id));
+                // icon.GetComponent<Button>().onClick.AddListener(() => DestroyEnemyByID(id));
                 icon.SetActive(true);
 
                 EnemyData data = new EnemyData(id, enemyObj, icon);
@@ -96,8 +96,7 @@ public class Game2Manager : MonoBehaviour
     void Update()
     {
         // Receive Hokuyo data
-        /*
-        FrameData data = OSCReceiver.Instance.GetLatestFrame();
+        FrameData data = OSCDataParser.Instance.GetLatestFrame();
         if (data != null)
         {
             if (isDebug) {
@@ -108,7 +107,6 @@ public class Game2Manager : MonoBehaviour
             }
             CheckHits(data);
         }
-        */
 
         if (hitCount >= completeCount)
         {
@@ -117,9 +115,9 @@ public class Game2Manager : MonoBehaviour
         }
 
         // Update icon positions in case enemies move (optional)
-        foreach (var data in activeEnemies)
+        foreach (var enemy in activeEnemies)
         {
-            UpdateIconPosition(data);
+            UpdateIconPosition(enemy);
         }
     }
 
@@ -136,21 +134,25 @@ public class Game2Manager : MonoBehaviour
         data.UIIcon.GetComponent<RectTransform>().anchoredPosition = anchoredPos;
     }
 
-    public void CheckHits(List<Vector2> dataPoints)
+    public void CheckHits(FrameData dataPoints)
     {
-        foreach (var point in dataPoints)
+        foreach (var entity in dataPoints.Entities)
         {
-            // Check collision with each icon
+            Vector2 point = new Vector2(entity.X, entity.Y);
+            if (isDebug)
+            {
+                Debug.Log($"Sensor Point: {point}");
+            }
+
             foreach (var enemy in new List<EnemyData>(activeEnemies))
             {
                 RectTransform iconRect = enemy.UIIcon.GetComponent<RectTransform>();
-                // Vector2 iconPos = iconRect.anchoredPosition;
-                Vector2 iconPos = new Vector2(
-                    uiWidth / 2 + iconRect.transform.position.x, 
-                    uiHeight / 2 + iconRect.transform.position.y
-                );
-                Debug.Log(point);
-                Debug.Log(iconPos);
+                Vector2 iconPos = iconRect.anchoredPosition;
+
+                if (isDebug)
+                {
+                    Debug.Log($"Icon Pos: {iconPos}");
+                }
 
                 if (Vector2.Distance(point, iconPos) < hitRadius)
                 {

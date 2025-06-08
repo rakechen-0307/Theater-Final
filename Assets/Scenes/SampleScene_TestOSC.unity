@@ -148,9 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fa0f1d3e517de4396f2a42e90e83c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 127.0.0.1
+  ip: 192.168.2.103
   port: 9995
-  isDebug: 0
+  isDebug: 1
 --- !u!4 &191242698
 Transform:
   m_ObjectHideFlags: 0
@@ -195,9 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516984c4bb3d97147b46c2ca28900a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oscAddress: /a1
-  port: 10000
-  isDebug: 1
 --- !u!4 &325137544
 Transform:
   m_ObjectHideFlags: 0
