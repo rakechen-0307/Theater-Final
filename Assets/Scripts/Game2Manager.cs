@@ -60,7 +60,7 @@ public class Game2Manager : MonoBehaviour
                 int id = nextEnemyID++;
                 GameObject icon = Instantiate(enemyIconPrefab, uiMap); // For clicking on UI
                 // TODO: remove this line when using Hokuyo
-                // icon.GetComponent<Button>().onClick.AddListener(() => DestroyEnemyByID(id));
+                icon.GetComponent<Button>().onClick.AddListener(() => DestroyEnemyByID(id));
                 icon.SetActive(true);
 
                 EnemyData data = new EnemyData(id, enemyObj, icon);
@@ -95,6 +95,7 @@ public class Game2Manager : MonoBehaviour
 
     void Update()
     {
+        /*
         // Receive Hokuyo data
         FrameData data = OSCDataParser.Instance.GetLatestFrame();
         if (data != null)
@@ -107,6 +108,7 @@ public class Game2Manager : MonoBehaviour
             }
             CheckHits(data);
         }
+        */
 
         if (hitCount >= completeCount)
         {
@@ -139,15 +141,21 @@ public class Game2Manager : MonoBehaviour
         foreach (var entity in dataPoints.Entities)
         {
             Vector2 point = new Vector2(entity.X, entity.Y);
+            /*
             if (isDebug)
             {
                 Debug.Log($"Sensor Point: {point}");
             }
+            */
 
             foreach (var enemy in new List<EnemyData>(activeEnemies))
             {
                 RectTransform iconRect = enemy.UIIcon.GetComponent<RectTransform>();
-                Vector2 iconPos = iconRect.anchoredPosition;
+                Vector2 pos = iconRect.anchoredPosition;
+                Vector2 iconPos = new Vector2(
+                    uiWidth / 2 + pos.x,
+                    uiHeight / 2 + pos.y
+                );
 
                 if (isDebug)
                 {
