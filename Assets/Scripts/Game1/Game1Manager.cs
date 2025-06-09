@@ -75,6 +75,7 @@ public class Game1Manager : MonoBehaviour
     private bool isClawReleaseHeld = false;
     private bool isConveyorSoundPlaying = false;
     private bool isClawSoundPlaying = false;
+    private bool isValveSoundPlaying = false;
 
     [SerializeField] private int uiWidth = 1920;
     [SerializeField] private int uiHeight = 1080;
@@ -360,6 +361,22 @@ public class Game1Manager : MonoBehaviour
                 handleRight.transform.localRotation = Quaternion.Euler(0, handleRight.transform.localRotation.eulerAngles.y - handleRotationSpeed * Time.deltaTime, 0);
             }
         }
+        // Single Sound
+        if(OSCSender.Instance != null && (isValveLeftHeld || isValveRightHeld))
+        {
+            OSCSender.Instance.PlaySound("gas", 1);
+        }
+        // // Loop sound
+        // if (OSCSender.Instance != null && (isValveLeftHeld || isValveRightHeld) && !isValveSoundPlaying)
+        // {
+        //     OSCSender.Instance.PlaySound("gas", 1);
+        //     isValveSoundPlaying = true;
+        // }
+        // else if (OSCSender.Instance != null && isValveSoundPlaying && !isValveLeftHeld && !isValveRightHeld)
+        // {
+        //     OSCSender.Instance.PlaySound("gas", 0);
+        //     isValveSoundPlaying = false;
+        // }
     }
 
     void CheckHits(FrameData dataPoints)
