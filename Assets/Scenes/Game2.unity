@@ -557,7 +557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684548465}
-  - component: {fileID: 684548464}
+  - component: {fileID: 684548466}
   m_Layer: 0
   m_Name: Game2Manager
   m_TagString: Untagged
@@ -565,34 +565,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &684548464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684548463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 803689a5f4c497042bec9829e85c6fd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnAngle: 90
-  spawnDistance: 5
-  enemyPrefab: {fileID: 5781650478587022367}
-  spawnPeriod: 1
-  spawnProb: 0.4
-  hitRadius: 50
-  enemyParent: {fileID: 1591760794}
-  enemyIconPrefab: {fileID: 2033699416}
-  uiMap: {fileID: 1418310545}
-  uiWidth: 1920
-  uiHeight: 1080
-  minY: -0.3
-  maxY: 0.1
-  completeCount: 20
-  nextSceneName: EndVideo
-  isDebug: 0
 --- !u!4 &684548465
 Transform:
   m_ObjectHideFlags: 0
@@ -608,59 +580,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &719744877
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 719744879}
-  - component: {fileID: 719744878}
-  m_Layer: 0
-  m_Name: DataParser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &719744878
+--- !u!114 &684548466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719744877}
+  m_GameObject: {fileID: 684548463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c2d6c6a2657a1f42ab51880f763f71d, type: 3}
+  m_Script: {fileID: 11500000, guid: 709055cc556146c498cbd374d875afba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oscAddress: /touches
-  port: 7000
-  isDebug: 1
-  realMinWidth: -1.98
-  realMaxWidth: 2.05
-  realMinHeight: -0.95
-  realMaxHeight: 0.97
+  spawnAngle: 90
+  spawnDistance: 5
+  enemyPrefab: {fileID: 5781650478587022367}
+  spawnPeriod: 1
+  spawnProb: 0.5
+  hitRadius: 50
+  enemyParent: {fileID: 1591760794}
+  enemyIconPrefab: {fileID: 2033699416}
+  uiMap: {fileID: 1418310545}
   uiWidth: 1920
   uiHeight: 1080
---- !u!4 &719744879
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719744877}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.094581984, y: 2.4937599, z: -6.1718}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  minY: -0.3
+  maxY: 0.25
+  completeCount: 20
+  nextSceneName: EndVideo
+  isDebug: 0
 --- !u!1 &1418310541
 GameObject:
   m_ObjectHideFlags: 0
@@ -5957,7 +5904,6 @@ SceneRoots:
   - {fileID: 1748280991}
   - {fileID: 395883387}
   - {fileID: 602089690301647044}
-  - {fileID: 719744879}
   - {fileID: 1650962203}
   - {fileID: 2868461}
   - {fileID: 469089522}

@@ -1273,11 +1273,11 @@ MonoBehaviour:
   handleLeft: {fileID: 2186182498039313291}
   handleRight: {fileID: 2796393530380105514}
   gravity: 9.8
-  conveyorSpeed: 0.7
-  gripperVerticalSpeed: 0.5
-  gripperHorizontalSpeed: 0.1
-  clawSpeed: 0.05
-  handleRotationSpeed: 10
+  conveyorSpeed: 1.5
+  gripperVerticalSpeed: 2
+  gripperHorizontalSpeed: 2
+  clawSpeed: 0.15
+  handleRotationSpeed: 15
   pickup: 0
   enableBarrel2: 0
   gripperLeftBT: {fileID: 27709138}
@@ -1642,6 +1642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 719744879}
   - component: {fileID: 719744878}
+  - component: {fileID: 719744880}
   m_Layer: 0
   m_Name: DataParser
   m_TagString: Untagged
@@ -1685,6 +1686,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &719744880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719744877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265807614c289444eadef52c92bc9708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &745331741
 GameObject:
   m_ObjectHideFlags: 0
@@ -7627,7 +7640,7 @@ MonoBehaviour:
   isGrounded: 0
   jumpForce: 45
   decay_frame: 15
-  nextSceneName: EndVideo
+  nextSceneName: Game2
   goalX: 6
   goalY: 1.6
 --- !u!54 &5866666020386818597
