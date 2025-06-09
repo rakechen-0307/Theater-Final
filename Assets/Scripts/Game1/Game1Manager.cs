@@ -74,6 +74,7 @@ public class Game1Manager : MonoBehaviour
         // BGM
         if (OSCSender.Instance != null)
         {
+            OSCSender.Instance.PlaySound("start", 0);
             OSCSender.Instance.PlaySound("game1", 1);
         }
 

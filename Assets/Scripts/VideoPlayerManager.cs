@@ -20,6 +20,7 @@ public class VideoEndSceneSwitcher : MonoBehaviour
         }
         else if (sceneName == "EndVideo" && OSCSender.Instance != null)
         {
+            OSCSender.Instance?.PlaySound("game2", 0);
             OSCSender.Instance?.PlaySound("end", 1);
         }
         else
