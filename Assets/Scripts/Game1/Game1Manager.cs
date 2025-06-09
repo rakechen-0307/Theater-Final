@@ -196,45 +196,75 @@ public class Game1Manager : MonoBehaviour
 
         // Gripper
         if (isGripperLeftHeld)
+        {
             gripper_systemRB.linearVelocity += new Vector3(-gripperHorizontalSpeed, 0, 0);
-        if (isGripperRightHeld)
-            gripper_systemRB.linearVelocity += new Vector3(gripperHorizontalSpeed, 0, 0);
-        if (isGripperUpHeld && gripper.transform.localPosition.z <= -0.01599986f)
-            gripperRB.linearVelocity += new Vector3(0, gripperVerticalSpeed, 0);
-        if (isGripperDownHeld)
-            gripperRB.linearVelocity += new Vector3(0, -gripperVerticalSpeed, 0);
-        if (OSCSender.Instance != null && (isGripperLeftHeld || isGripperRightHeld || isGripperUpHeld || isGripperDownHeld) && !isClawSoundPlaying)
-        {
-            OSCSender.Instance.PlaySound("arm", 1);
-            isClawSoundPlaying = true;
-        }
-        else if (OSCSender.Instance != null && isClawSoundPlaying && !isGripperLeftHeld && !isGripperRightHeld && !isGripperUpHeld && !isGripperDownHeld)
-        {
-            OSCSender.Instance.PlaySound("arm", 0);
-            isClawSoundPlaying = false;
-        }
-
-        // Conveyor
-        if (isConveyorLeftHeld)
-        {
-            if (barrel1Collision.isOnConveyor)
-                barrel1RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
-            else if (barrel2Collision.isOnConveyor && enableBarrel2)
-                barrel2RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
-            if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
             {
-                OSCSender.Instance.PlaySound("conveyor", 1);
-                isConveyorSoundPlaying = true;
+                OSCSender.Instance.PlaySound("arm", 1);
+                Debug.Log("switch to true left");
+                isClawSoundPlaying = true;
             }
         }
-        else if (isConveyorSoundPlaying && !isConveyorRightHeld)
+        if (isGripperRightHeld)
+        {
+            gripper_systemRB.linearVelocity += new Vector3(gripperHorizontalSpeed, 0, 0);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                Debug.Log("switch to true right");
+                isClawSoundPlaying = true;
+            }
+        }
+        if (isGripperUpHeld && gripper.transform.localPosition.z <= -0.01599986f)
+        {
+            gripperRB.linearVelocity += new Vector3(0, gripperVerticalSpeed, 0);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                Debug.Log("switch to true up");
+                isClawSoundPlaying = true;
+            }
+        }
+        if (isGripperDownHeld)
+        {
+            gripperRB.linearVelocity += new Vector3(0, -gripperVerticalSpeed, 0); if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                Debug.Log("switch to true down");
+                isClawSoundPlaying = true;
+            }
+        }else if (isClawSoundPlaying && !isGripperUpHeld && !isGripperDownHeld && !isGripperLeftHeld && !isGripperRightHeld && !isClawGrabHeld && !isClawReleaseHeld)
         {
             if (OSCSender.Instance != null)
             {
-                OSCSender.Instance.PlaySound("conveyor", 0);
-                isConveyorSoundPlaying = false;
+                OSCSender.Instance.PlaySound("arm", 0);
+                Debug.Log("switch to false");
+                isClawSoundPlaying = false;
             }
         }
+        
+
+        // Conveyor
+            if (isConveyorLeftHeld)
+            {
+                if (barrel1Collision.isOnConveyor)
+                    barrel1RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
+                else if (barrel2Collision.isOnConveyor && enableBarrel2)
+                    barrel2RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
+                if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+                {
+                    OSCSender.Instance.PlaySound("conveyor", 1);
+                    isConveyorSoundPlaying = true;
+                }
+            }
+            else if (isConveyorSoundPlaying && !isConveyorRightHeld)
+            {
+                if (OSCSender.Instance != null)
+                {
+                    OSCSender.Instance.PlaySound("conveyor", 0);
+                    isConveyorSoundPlaying = false;
+                }
+            }
         if (isConveyorRightHeld)
         {
             if (barrel1Collision.isOnConveyor)
@@ -285,6 +315,7 @@ public class Game1Manager : MonoBehaviour
             if (OSCSender.Instance != null && !isClawSoundPlaying)
             {
                 OSCSender.Instance.PlaySound("arm", 1);
+                Debug.Log("switch to true release");
                 isClawSoundPlaying = true;
             }
         }
@@ -293,6 +324,7 @@ public class Game1Manager : MonoBehaviour
             if (OSCSender.Instance != null)
             {
                 OSCSender.Instance.PlaySound("arm", 0);
+                Debug.Log("switch to false release");
                 isClawSoundPlaying = false;
             }
         }
@@ -314,7 +346,18 @@ public class Game1Manager : MonoBehaviour
                 isClawSoundPlaying = false;
             }
         }
-
+// if (OSCSender.Instance != null && (isGripperLeftHeld || isGripperRightHeld || isGripperUpHeld || isGripperDownHeld) && !isClawSoundPlaying)
+//         {
+//             OSCSender.Instance.PlaySound("arm", 1);
+//             Debug.Log("switch to true");
+//             isClawSoundPlaying = true;
+//         }
+//         else if (OSCSender.Instance != null && isClawSoundPlaying && !isGripperLeftHeld && !isGripperRightHeld && !isGripperUpHeld && !isGripperDownHeld)
+//         {
+//             OSCSender.Instance.PlaySound("arm", 0);
+//             Debug.Log("switch to false");
+//             isClawSoundPlaying = false;
+//         }
         // Valve
         if (isValveRightHeld)
         {
