@@ -1263,12 +1263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1438ae3c47ffa0443a5d9fd0ed0f8dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 919132148530629346}
-  speedX: 1.5
-  gravity: 9.8
-  isGrounded: 0
-  jumpForce: 80
-  decay_frame: 15
   gripper_system: {fileID: 2992227845501556095}
   conveyor: {fileID: 8385774546916134529}
   barrel1: {fileID: 2598583813203105772}
@@ -1278,6 +1272,7 @@ MonoBehaviour:
   clawRight: {fileID: 7632764616533365665}
   handleLeft: {fileID: 2186182498039313291}
   handleRight: {fileID: 2796393530380105514}
+  gravity: 9.8
   conveyorSpeed: 0.7
   gripperVerticalSpeed: 0.5
   gripperHorizontalSpeed: 0.1
@@ -1297,10 +1292,7 @@ MonoBehaviour:
   clawReleaseBT: {fileID: 1389280416}
   uiWidth: 1920
   uiHeight: 1080
-  nextSceneName: EndVideo
   isDebug: 0
-  goalX: 6
-  goalY: 1.6
 --- !u!4 &659129697
 Transform:
   m_ObjectHideFlags: 0
@@ -4739,7 +4731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148530629346}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -6.89, y: -3.24, z: -1.55}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
@@ -4749,7 +4741,7 @@ Transform:
   - {fileID: 6357918451561407560}
   - {fileID: 8160277321127734351}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!23 &557580194677153648
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7583,7 +7575,7 @@ Animator:
   m_GameObject: {fileID: 919132148530629346}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d5620196386a66348a268a4cfaf63fe9, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 531717ca8e69dff4abe11f97e05987d5, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -7615,9 +7607,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.8082708
+  m_Height: 1.4469376
   m_Direction: 1
-  m_Center: {x: 0, y: -0.023265481, z: 0}
+  m_Center: {x: -0, y: 0.15740111, z: 0}
 --- !u!114 &5866666020386818596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7625,7 +7617,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148530629346}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e624cdfbe7679041bfc626a021872b2, type: 3}
   m_Name: 
@@ -7635,6 +7627,9 @@ MonoBehaviour:
   isGrounded: 0
   jumpForce: 45
   decay_frame: 15
+  nextSceneName: EndVideo
+  goalX: 6
+  goalY: 1.6
 --- !u!54 &5866666020386818597
 Rigidbody:
   m_ObjectHideFlags: 0

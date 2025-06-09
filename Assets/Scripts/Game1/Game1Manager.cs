@@ -2,22 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 public class Game1Manager : MonoBehaviour
 {
-    // Character
-    [SerializeField] GameObject character;
-    [SerializeField] private float speedX = 1.5f;
-    [SerializeField] private float gravity = 9.8f;
-    [SerializeField] private bool isGrounded = false;
-    [SerializeField] private float jumpForce = 50f;
-    [SerializeField] private int decay_frame = 15;
-    private Rigidbody characterRB;
-    private List<bool> grounded = new List<bool>();
-    private bool jump = false;
-    private float acceleration = 0f;
-
     // System
     [SerializeField] private GameObject gripper_system;
     private Rigidbody gripper_systemRB;
@@ -41,6 +28,7 @@ public class Game1Manager : MonoBehaviour
     private Handle handleRightTrigger_l;
     private Handle handleRightTrigger_r;
 
+    [SerializeField] private float gravity = 9.8f;
     [SerializeField] private float conveyorSpeed = 0.7f;
     [SerializeField] private float gripperVerticalSpeed = 0.5f;
     [SerializeField] private float gripperHorizontalSpeed = 0.1f;
@@ -79,10 +67,7 @@ public class Game1Manager : MonoBehaviour
 
     [SerializeField] private int uiWidth = 1920;
     [SerializeField] private int uiHeight = 1080;
-    [SerializeField] private string nextSceneName;
     [SerializeField] private bool isDebug = false;
-    [SerializeField] private float goalX = 6f;
-    [SerializeField] private float goalY = 1.6f;
 
     void Start()
     {
@@ -91,10 +76,6 @@ public class Game1Manager : MonoBehaviour
         {
             OSCSender.Instance.PlaySound("game1", 1);
         }
-        // Character
-        characterRB = character.GetComponent<Rigidbody>();
-        jump = false;
-        acceleration = 0f;
 
         // System
         gripper_systemRB = gripper_system.GetComponent<Rigidbody>();
@@ -162,12 +143,12 @@ public class Game1Manager : MonoBehaviour
         barrel2.GetComponent<Collider>().enabled = false; // Disable barrel2 collider initially
         barrel2.GetComponent<MeshRenderer>().enabled = false; // Disable barrel2 mesh renderer initially
 
+        // TODO: disable this
         CheckHitsTest();
     }
 
     void Update()
     {
-        /*
         // Receive Hokuyo data
         FrameData data = OSCDataParser.Instance.GetLatestFrame();
         if (data != null)
@@ -180,7 +161,6 @@ public class Game1Manager : MonoBehaviour
             }
             CheckHits(data);
         }
-        */
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -188,12 +168,6 @@ public class Game1Manager : MonoBehaviour
             barrel2.GetComponent<Collider>().enabled = true; // Enable barrel2 collider
             barrel2.GetComponent<MeshRenderer>().enabled = true; // Enable barrel2 mesh renderer
             Debug.Log($"[Barrel2] Enabled: {enableBarrel2}");
-        }
-
-        if (character.transform.position.x >= goalX && character.transform.position.y >= goalY)
-        {
-            GoToNextScene();
-            return;
         }
     }
 
@@ -381,18 +355,33 @@ public class Game1Manager : MonoBehaviour
 
     void CheckHits(FrameData dataPoints)
     {
+        isGripperLeftHeld = false;
+        isGripperRightHeld = false;
+        isGripperUpHeld = false;
+        isGripperDownHeld = false;
+        isConveyorLeftHeld = false;
+        isConveyorRightHeld = false;
+        isValveLeftHeld = false;
+        isValveRightHeld = false;
+        isClawGrabHeld = false;
+        isClawReleaseHeld = false;
+
         foreach (var entity in dataPoints.Entities)
         {
             Vector2 point = new Vector2(entity.X, entity.Y);
-            /*
-            if (isDebug)
-            {
-                Debug.Log($"Sensor Point: {point}");
-            }
-            */
 
-            // TODO: check whether the data's position is on the button
-        }
+            // Check each button
+            if (IsPointInButton(gripperLeftBT, point)) isGripperLeftHeld = true;
+            if (IsPointInButton(gripperRightBT, point)) isGripperRightHeld = true;
+            if (IsPointInButton(gripperUpBT, point)) isGripperUpHeld = true;
+            if (IsPointInButton(gripperDownBT, point)) isGripperDownHeld = true;
+            if (IsPointInButton(conveyorLeftBT, point)) isConveyorLeftHeld = true;
+            if (IsPointInButton(conveyorRightBT, point)) isConveyorRightHeld = true;
+            if (IsPointInButton(valveLeftBT, point)) isValveLeftHeld = true;
+            if (IsPointInButton(valveRightBT, point)) isValveRightHeld = true;
+            if (IsPointInButton(clawGrabBT, point)) isClawGrabHeld = true;
+            if (IsPointInButton(clawReleaseBT, point)) isClawReleaseHeld = true;
+        } 
     }
 
     void CheckHitsTest()
@@ -409,9 +398,19 @@ public class Game1Manager : MonoBehaviour
         AddPressEvent(clawReleaseBT, () => isClawReleaseHeld = true, () => isClawReleaseHeld = false);
     }
 
-    void GoToNextScene()
+    bool IsPointInButton(Button button, Vector2 point)
     {
-        SceneManager.LoadScene(nextSceneName);
+        RectTransform rt = button.GetComponent<RectTransform>();
+        Vector2 buttonCenter = rt.anchoredPosition;
+        Vector2 buttonSize = rt.rect.size;
+
+        float left = buttonCenter.x - buttonSize.x / 2;
+        float right = buttonCenter.x + buttonSize.x / 2;
+        float bottom = buttonCenter.y - buttonSize.y / 2;
+        float top = buttonCenter.y + buttonSize.y / 2;
+
+        return (point.x >= left && point.x <= right &&
+                point.y >= bottom && point.y <= top);
     }
 
     void AddPressEvent(Button button, System.Action onDown, System.Action onUp)

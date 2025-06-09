@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovement : MonoBehaviour
@@ -7,18 +8,26 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] private float speedX = 5f; // Speed of the character movement
     [SerializeField] private float gravity = 9.8f; // Gravity value to apply when not moving
-    [SerializeField] private bool isGrounded = false; // Check if the character is grounded
+    public bool isGrounded = false; // Check if the character is grounded
     private List<bool> grounded = new List<bool>(); // List to track ground contacts
     private bool jump = false; // Flag to indicate if the character should jump
     [SerializeField] private float jumpForce = 50f; // Force applied when jumping
     private float acceleration = 0f; // Acceleration factor for movement
     [SerializeField] private int decay_frame = 15; // Decay frame for acceleration
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private float goalX = 6f;
+    [SerializeField] private float goalY = 1.6f;
+
+    private Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         jump = false; // Initialize jump flag
         acceleration = 0f; // Initialize acceleration
+
+        animator = GetComponent<Animator>();
     }
 
 
@@ -39,8 +48,19 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I) && isGrounded)
         {
             jump = true; // Set jump flag when space is pressed and character is grounded
+            animator.SetBool("isJump", true);
+        }
+        else
+        {
+            animator.SetBool("isJump", false);
+        }
+
+        if (gameObject.transform.position.x >= goalX && gameObject.transform.position.y >= goalY)
+        {
+            GoToNextScene();
         }
     }
+
     void FixedUpdate()
     {
         if (grounded.Count == 0)
@@ -67,24 +87,32 @@ public class CharacterMovement : MonoBehaviour
         {
             rb.linearVelocity -= new Vector3(0, gravity * Time.fixedDeltaTime, 0); // Apply gravity if not grounded
         }
-        // else
-        // {
-        //     rb.linearVelocity = new Vector3(0, 0, 0); // Reset vertical velocity when grounded
-        // }
 
         if (Input.GetKey(KeyCode.L))
         {
             rb.linearVelocity += new Vector3(speedX, 0, 0); // Move right
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            animator.SetBool("isWalk", true);
         }
         else if (Input.GetKey(KeyCode.J))
         {
             rb.linearVelocity += new Vector3(-speedX, 0, 0); // Move backward
+            transform.rotation = Quaternion.Euler(0, -90, 0);
+            animator.SetBool("isWalk", true);
+        }
+        else
+        {
+            animator.SetBool("isWalk", false);
         }
         if (jump)
         {
-            // rb.linearVelocity += new Vector3(0, jumpForce, 0); // Apply jump force
             acceleration = jumpForce;
             jump = false; // Reset jump flag after applying force
         }
+    }
+
+    void GoToNextScene()
+    {
+        SceneManager.LoadScene(nextSceneName);
     }
 }
