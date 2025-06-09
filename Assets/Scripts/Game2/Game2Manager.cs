@@ -45,6 +45,11 @@ public class Game2Manager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
+        // BGM
+        if (OSCSender.Instance != null)
+        {
+            OSCSender.Instance.PlaySound("game2", 1);
+        }
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -86,6 +91,7 @@ public class Game2Manager : MonoBehaviour
         EnemyData data = activeEnemies.Find(e => e.ID == id);
         if (data != null)
         {
+            OSCSender.Instance.PlaySound("shot", 1);
             Destroy(data.EnemyObject);
             Destroy(data.UIIcon);
             activeEnemies.Remove(data);

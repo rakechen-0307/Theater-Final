@@ -12,6 +12,20 @@ public class VideoEndSceneSwitcher : MonoBehaviour
         if (videoPlayer == null)
             videoPlayer = GetComponent<VideoPlayer>();
 
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (sceneName == "StartVideo" && OSCSender.Instance != null)
+        {
+            OSCSender.Instance?.PlaySound("start", 1);
+        }
+        else if (sceneName == "EndVideo" && OSCSender.Instance != null)
+        {
+            OSCSender.Instance?.PlaySound("end", 1);
+        }
+        else
+        {
+            Debug.LogWarning("Unrecognized scene: " + sceneName);
+        }
         videoPlayer.loopPointReached += OnVideoEnd;
     }
 

@@ -73,6 +73,9 @@ public class Game1Manager : MonoBehaviour
     private bool isValveRightHeld = false;
     private bool isClawGrabHeld = false;
     private bool isClawReleaseHeld = false;
+    private bool isConveyorSoundPlaying = false;
+    private bool isClawSoundPlaying = false;
+    private bool isValveSoundPlaying = false;
 
     [SerializeField] private int uiWidth = 1920;
     [SerializeField] private int uiHeight = 1080;
@@ -83,6 +86,11 @@ public class Game1Manager : MonoBehaviour
 
     void Start()
     {
+        // BGM
+        if (OSCSender.Instance != null)
+        {
+            OSCSender.Instance.PlaySound("game1", 1);
+        }
         // Character
         characterRB = character.GetComponent<Rigidbody>();
         jump = false;
@@ -220,6 +228,16 @@ public class Game1Manager : MonoBehaviour
             gripperRB.linearVelocity += new Vector3(0, gripperVerticalSpeed, 0);
         if (isGripperDownHeld)
             gripperRB.linearVelocity += new Vector3(0, -gripperVerticalSpeed, 0);
+        if (OSCSender.Instance != null && (isGripperLeftHeld || isGripperRightHeld || isGripperUpHeld || isGripperDownHeld) && !isClawSoundPlaying)
+        {
+            OSCSender.Instance.PlaySound("arm", 1);
+            isClawSoundPlaying = true;
+        }
+        else if (OSCSender.Instance != null && isClawSoundPlaying && !isGripperLeftHeld && !isGripperRightHeld && !isGripperUpHeld && !isGripperDownHeld)
+        {
+            OSCSender.Instance.PlaySound("arm", 0);
+            isClawSoundPlaying = false;
+        }
 
         // Conveyor
         if (isConveyorLeftHeld)
@@ -228,6 +246,19 @@ public class Game1Manager : MonoBehaviour
                 barrel1RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
             else if (barrel2Collision.isOnConveyor && enableBarrel2)
                 barrel2RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
+            if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 1);
+                isConveyorSoundPlaying = true;
+            }
+        }
+        else if (isConveyorSoundPlaying && !isConveyorRightHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 0);
+                isConveyorSoundPlaying = false;
+            }
         }
         if (isConveyorRightHeld)
         {
@@ -235,6 +266,19 @@ public class Game1Manager : MonoBehaviour
                 barrel1RB.linearVelocity += new Vector3(conveyorSpeed, 0, 0);
             else if (barrel2Collision.isOnConveyor && enableBarrel2)
                 barrel2RB.linearVelocity += new Vector3(conveyorSpeed, 0, 0);
+            if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 1);
+                isConveyorSoundPlaying = true;
+            }
+        }
+        else if (isConveyorSoundPlaying && !isConveyorLeftHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 0);
+                isConveyorSoundPlaying = false;
+            }
         }
 
         // Claw
@@ -263,11 +307,37 @@ public class Game1Manager : MonoBehaviour
         {
             clawLeft.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
             clawRight.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                isClawSoundPlaying = true;
+            }
+        }
+        else if (isClawSoundPlaying && !isClawReleaseHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("arm", 0);
+                isClawSoundPlaying = false;
+            }
         }
         if (isClawReleaseHeld && clawLeft.transform.localPosition.x <= 0.008f)
         {
             clawLeft.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
             clawRight.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                isClawSoundPlaying = true;
+            }
+        }
+        else if (isClawSoundPlaying && !isClawGrabHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("arm", 0);
+                isClawSoundPlaying = false;
+            }
         }
 
         // Valve
@@ -291,6 +361,22 @@ public class Game1Manager : MonoBehaviour
                 handleRight.transform.localRotation = Quaternion.Euler(0, handleRight.transform.localRotation.eulerAngles.y - handleRotationSpeed * Time.deltaTime, 0);
             }
         }
+        // Single Sound
+        if(OSCSender.Instance != null && (isValveLeftHeld || isValveRightHeld))
+        {
+            OSCSender.Instance.PlaySound("gas", 1);
+        }
+        // // Loop sound
+        // if (OSCSender.Instance != null && (isValveLeftHeld || isValveRightHeld) && !isValveSoundPlaying)
+        // {
+        //     OSCSender.Instance.PlaySound("gas", 1);
+        //     isValveSoundPlaying = true;
+        // }
+        // else if (OSCSender.Instance != null && isValveSoundPlaying && !isValveLeftHeld && !isValveRightHeld)
+        // {
+        //     OSCSender.Instance.PlaySound("gas", 0);
+        //     isValveSoundPlaying = false;
+        // }
     }
 
     void CheckHits(FrameData dataPoints)

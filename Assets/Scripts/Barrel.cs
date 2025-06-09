@@ -19,6 +19,10 @@ public class Barrel : MonoBehaviour
             if (Vector3.Dot(contact.normal, Vector3.up) > 0.8f)
             {
                 grounded.Add(true); // We have contact with a ground-like surface
+                if (OSCSender.Instance != null)
+                {
+                    OSCSender.Instance.PlaySound("can", 1); // Play collision sound
+                }
                 return; // early exit: we found ground
             }
         }
