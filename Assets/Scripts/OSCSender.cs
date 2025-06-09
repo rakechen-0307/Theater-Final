@@ -22,11 +22,11 @@ public class OSCSender : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void PlaySound(string soundName)
+    public void PlaySound(string soundName, int start)
     {
         if (oscClient != null)
         {
-            oscClient.Send($"/{soundName}", 1, 0);
+            oscClient.Send($"/{soundName}", start);
             if(isDebug)
                 Debug.Log($"Sent OSC message to play sound: {soundName}");
         }

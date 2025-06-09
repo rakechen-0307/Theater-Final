@@ -11,7 +11,10 @@ public class VideoEndSceneSwitcher : MonoBehaviour
     {
         if (videoPlayer == null)
             videoPlayer = GetComponent<VideoPlayer>();
-
+        if (OSCSender.Instance != null)
+        {
+            OSCSender.Instance.PlaySound("start", 1);
+        }
         videoPlayer.loopPointReached += OnVideoEnd;
     }
 
