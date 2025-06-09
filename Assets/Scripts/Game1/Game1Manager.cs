@@ -74,6 +74,7 @@ public class Game1Manager : MonoBehaviour
     private bool isClawGrabHeld = false;
     private bool isClawReleaseHeld = false;
     private bool isConveyorSoundPlaying = false;
+    private bool isClawSoundPlaying = false;
 
     [SerializeField] private int uiWidth = 1920;
     [SerializeField] private int uiHeight = 1080;
@@ -226,6 +227,16 @@ public class Game1Manager : MonoBehaviour
             gripperRB.linearVelocity += new Vector3(0, gripperVerticalSpeed, 0);
         if (isGripperDownHeld)
             gripperRB.linearVelocity += new Vector3(0, -gripperVerticalSpeed, 0);
+        if (OSCSender.Instance != null && (isGripperLeftHeld || isGripperRightHeld || isGripperUpHeld || isGripperDownHeld) && !isClawSoundPlaying)
+        {
+            OSCSender.Instance.PlaySound("arm", 1);
+            isClawSoundPlaying = true;
+        }
+        else if (OSCSender.Instance != null && isClawSoundPlaying && !isGripperLeftHeld && !isGripperRightHeld && !isGripperUpHeld && !isGripperDownHeld)
+        {
+            OSCSender.Instance.PlaySound("arm", 0);
+            isClawSoundPlaying = false;
+        }
 
         // Conveyor
         if (isConveyorLeftHeld)
@@ -295,11 +306,37 @@ public class Game1Manager : MonoBehaviour
         {
             clawLeft.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
             clawRight.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                isClawSoundPlaying = true;
+            }
+        }
+        else if (isClawSoundPlaying && !isClawReleaseHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("arm", 0);
+                isClawSoundPlaying = false;
+            }
         }
         if (isClawReleaseHeld && clawLeft.transform.localPosition.x <= 0.008f)
         {
             clawLeft.transform.Translate(Vector3.right * clawSpeed * Time.deltaTime);
             clawRight.transform.Translate(Vector3.left * clawSpeed * Time.deltaTime);
+            if (OSCSender.Instance != null && !isClawSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("arm", 1);
+                isClawSoundPlaying = true;
+            }
+        }
+        else if (isClawSoundPlaying && !isClawGrabHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("arm", 0);
+                isClawSoundPlaying = false;
+            }
         }
 
         // Valve
