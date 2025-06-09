@@ -73,6 +73,7 @@ public class Game1Manager : MonoBehaviour
     private bool isValveRightHeld = false;
     private bool isClawGrabHeld = false;
     private bool isClawReleaseHeld = false;
+    private bool isConveyorSoundPlaying = false;
 
     [SerializeField] private int uiWidth = 1920;
     [SerializeField] private int uiHeight = 1080;
@@ -83,6 +84,11 @@ public class Game1Manager : MonoBehaviour
 
     void Start()
     {
+        // BGM
+        if (OSCSender.Instance != null)
+        {
+            OSCSender.Instance.PlaySound("game1", 1);
+        }
         // Character
         characterRB = character.GetComponent<Rigidbody>();
         jump = false;
@@ -228,6 +234,19 @@ public class Game1Manager : MonoBehaviour
                 barrel1RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
             else if (barrel2Collision.isOnConveyor && enableBarrel2)
                 barrel2RB.linearVelocity += new Vector3(-conveyorSpeed, 0, 0);
+            if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 1);
+                isConveyorSoundPlaying = true;
+            }
+        }
+        else if (isConveyorSoundPlaying && !isConveyorRightHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 0);
+                isConveyorSoundPlaying = false;
+            }
         }
         if (isConveyorRightHeld)
         {
@@ -235,6 +254,19 @@ public class Game1Manager : MonoBehaviour
                 barrel1RB.linearVelocity += new Vector3(conveyorSpeed, 0, 0);
             else if (barrel2Collision.isOnConveyor && enableBarrel2)
                 barrel2RB.linearVelocity += new Vector3(conveyorSpeed, 0, 0);
+            if (OSCSender.Instance != null && !isConveyorSoundPlaying)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 1);
+                isConveyorSoundPlaying = true;
+            }
+        }
+        else if (isConveyorSoundPlaying && !isConveyorLeftHeld)
+        {
+            if (OSCSender.Instance != null)
+            {
+                OSCSender.Instance.PlaySound("conveyor", 0);
+                isConveyorSoundPlaying = false;
+            }
         }
 
         // Claw

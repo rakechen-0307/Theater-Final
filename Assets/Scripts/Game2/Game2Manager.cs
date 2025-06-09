@@ -45,6 +45,11 @@ public class Game2Manager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
+        // BGM
+        if (OSCSender.Instance != null)
+        {
+            OSCSender.Instance.PlaySound("game2", 1);
+        }
     }
 
     IEnumerator SpawnEnemyRoutine()
