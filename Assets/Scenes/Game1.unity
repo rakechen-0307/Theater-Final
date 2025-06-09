@@ -1292,7 +1292,7 @@ MonoBehaviour:
   clawReleaseBT: {fileID: 1389280416}
   uiWidth: 1920
   uiHeight: 1080
-  isDebug: 0
+  isDebug: 1
 --- !u!4 &659129697
 Transform:
   m_ObjectHideFlags: 0
@@ -1666,8 +1666,8 @@ MonoBehaviour:
   isDebug: 1
   realMinWidth: -1.98
   realMaxWidth: 2.05
-  realMinHeight: -0.95
-  realMaxHeight: 0.97
+  realMinHeight: -1.02
+  realMaxHeight: 0.95
   uiWidth: 1920
   uiHeight: 1080
 --- !u!4 &719744879

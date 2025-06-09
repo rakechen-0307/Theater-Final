@@ -404,10 +404,10 @@ public class Game1Manager : MonoBehaviour
         Vector2 buttonCenter = rt.anchoredPosition;
         Vector2 buttonSize = rt.rect.size;
 
-        float left = buttonCenter.x - buttonSize.x / 2;
-        float right = buttonCenter.x + buttonSize.x / 2;
-        float bottom = buttonCenter.y - buttonSize.y / 2;
-        float top = buttonCenter.y + buttonSize.y / 2;
+        float left = uiWidth / 2 + buttonCenter.x - buttonSize.x / 2;
+        float right = uiWidth / 2 - buttonCenter.x + buttonSize.x / 2;
+        float bottom = uiHeight / 2 + buttonCenter.y - buttonSize.y / 2;
+        float top = uiHeight / 2 - buttonCenter.y + buttonSize.y / 2;
 
         return (point.x >= left && point.x <= right &&
                 point.y >= bottom && point.y <= top);

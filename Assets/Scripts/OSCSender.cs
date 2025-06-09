@@ -12,23 +12,30 @@ public class OSCSender : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake");
         if (_instance == null)
         {
+            Debug.Log("Null");
             _instance = this;
             DontDestroyOnLoad(gameObject);
             oscClient = new OscClient(ip, port);
         }
-        else if (_instance != this)
+        else if (_instance != this) {
+            Debug.Log("Destroy");
             Destroy(gameObject);
+        }
     }
 
     public void PlaySound(string soundName, int start)
     {
+        Debug.Log("PLAY SOUND");
         if (oscClient != null)
         {
             oscClient.Send($"/{soundName}", start);
+            /*
             if(isDebug)
-                Debug.Log($"Sent OSC message to play sound: {soundName}");
+            */
+            Debug.Log($"Sent OSC message to play sound: {soundName}");
         }
         else
         {
