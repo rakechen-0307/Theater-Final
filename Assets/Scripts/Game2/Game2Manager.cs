@@ -86,6 +86,7 @@ public class Game2Manager : MonoBehaviour
         EnemyData data = activeEnemies.Find(e => e.ID == id);
         if (data != null)
         {
+            OSCSender.Instance.PlaySound("laser");
             Destroy(data.EnemyObject);
             Destroy(data.UIIcon);
             activeEnemies.Remove(data);

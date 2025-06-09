@@ -6,17 +6,20 @@ public class OSCSender : MonoBehaviour
     private static OSCSender _instance;
     public static OSCSender Instance { get => _instance; }
     private OscClient oscClient;
-    [SerializeField] private string ip;
-    [SerializeField] private int port;
+    [SerializeField] private string ip = "192.168.2.103";
+    [SerializeField] private int port = 9995;
     [SerializeField] private bool isDebug;
 
     private void Awake()
     {
         if (_instance == null)
+        {
             _instance = this;
+            DontDestroyOnLoad(gameObject);
+            oscClient = new OscClient(ip, port);
+        }
         else if (_instance != this)
             Destroy(gameObject);
-        oscClient = new OscClient(ip, port);
     }
 
     public void PlaySound(string soundName)
